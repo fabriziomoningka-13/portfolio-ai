@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Design Tokens — "Modern Tech / Deep Teal" theme
+   Sumber: portfolio-project-full.docx, Bagian 1.5 Design System
+   ========================================================================== */
+:root {
+  --color-dark-base: #0F172A;    /* Background utama */
+  --color-dark-surface: #1E293B; /* Card / section background */
+  --color-border: #334155;       /* Garis pembatas */
+  --color-teal-primary: #14B8A6; /* Tombol, link, highlight */
+  --color-teal-deep: #0D9488;    /* Hover state */
+  --color-green-accent: #22C55E; /* Badge status / aksen */
+  --color-text-primary: #F1F5F9; /* Teks utama (dark bg) */
+  --color-text-muted: #94A3B8;   /* Teks sekunder / caption */
+
+  --background: var(--color-dark-base);
+  --foreground: var(--color-text-primary);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-dark-base: var(--color-dark-base);
+  --color-dark-surface: var(--color-dark-surface);
+  --color-border: var(--color-border);
+  --color-teal-primary: var(--color-teal-primary);
+  --color-teal-deep: var(--color-teal-deep);
+  --color-green-accent: var(--color-green-accent);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-muted: var(--color-text-muted);
+
+  --font-heading: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+}
+
+code, pre, kbd {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* Subtle teal glow — dipakai untuk tombol/card penting sesuai catatan desain 2.3 */
+.glow-teal {
+  box-shadow: 0 0 24px -4px rgba(20, 184, 166, 0.35);
+}
+
+/* Glassmorphism tipis — dipakai untuk chat widget sesuai catatan desain 2.3 */
+.glass {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Budi Santoso",
+  "role": "Software Engineer",
+  "focus": "AI & Web Development",
+  "tagline": "Halo, saya Budi Santoso 👋",
+  "subtitle": "Software Engineer • Fokus AI & Web Development",
+  "avatarUrl": "/images/avatar.jpg",
+  "resumeUrl": "/files/cv-budi-santoso.pdf",
+  "about": {
+    "paragraphs": [
+      "Saya adalah software engineer dengan pengalaman 2 tahun membangun aplikasi web modern menggunakan React, Next.js, dan Node.js.",
+      "Belakangan ini saya fokus mendalami AI/LLM engineering, khususnya penerapan RAG (Retrieval Augmented Generation) untuk membangun produk berbasis AI yang aman dan terarah (scoped).",
+      "Saya senang mengerjakan project end-to-end: dari desain UI, backend API, sampai deployment production."
+    ],
+    "highlights": [
+      { "label": "Tahun Pengalaman", "value": "2+" },
+      { "label": "Project Selesai", "value": "10+" },
+      { "label": "Teknologi Dikuasai", "value": "8+" }
+    ]
+  },
+  "skills": [
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Python",
+    "Tailwind",
+    "PostgreSQL",
+    "Docker",
+    "Claude API",
+    "Git"
+  ],
+  "experience": [
+    {
+      "company": "PT Contoh Teknologi Indonesia",
+      "position": "Frontend Engineer",
+      "period": "Jan 2024 — Sekarang",
+      "description": "Mengembangkan dan memelihara aplikasi web berbasis Next.js untuk produk internal, berkolaborasi dengan tim desain dan backend."
+    },
+    {
+      "company": "Startup XYZ",
+      "position": "Junior Web Developer",
+      "period": "Jul 2022 — Des 2023",
+      "description": "Membangun fitur landing page dan dashboard admin menggunakan React dan REST API."
+    }
+  ],
+  "education": [
+    {
+      "institution": "Universitas Contoh",
+      "degree": "S1 Teknik Informatika",
+      "period": "2018 — 2022"
+    }
+  ],
+  "contact": {
+    "email": "budi.santoso@email.com",
+    "linkedin": "https://linkedin.com/in/budisantoso",
+    "github": "https://github.com/budisantoso",
+    "location": "Jakarta, Indonesia"
+  }
+}

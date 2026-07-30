@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "portfolio-ai-chatbot",
+    "title": "Portfolio Website + AI Chatbot",
+    "description": "Website portfolio pribadi dengan chatbot AI berbasis RAG yang hanya menjawab pertanyaan seputar skill, pengalaman, dan project saya.",
+    "tech": ["Next.js", "TypeScript", "TailwindCSS", "Claude API"],
+    "thumbnail": "/images/projects/portfolio-ai.png",
+    "demoUrl": "https://your-portfolio.vercel.app",
+    "githubUrl": "https://github.com/username/portfolio-ai"
+  },
+  {
+    "slug": "project-two",
+    "title": "Project Two",
+    "description": "Deskripsi singkat project kedua. Ganti dengan project nyata milik kamu beserta tech stack yang dipakai.",
+    "tech": ["React", "Node.js", "PostgreSQL"],
+    "thumbnail": "/images/projects/project-two.png",
+    "demoUrl": "https://example.com",
+    "githubUrl": "https://github.com/username/project-two"
+  },
+  {
+    "slug": "project-three",
+    "title": "Project Three",
+    "description": "Deskripsi singkat project ketiga. Ganti dengan project nyata milik kamu beserta tech stack yang dipakai.",
+    "tech": ["Python", "Docker"],
+    "thumbnail": "/images/projects/project-three.png",
+    "demoUrl": "https://example.com",
+    "githubUrl": "https://github.com/username/project-three"
+  }
+]
