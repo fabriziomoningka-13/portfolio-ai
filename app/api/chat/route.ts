@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { anthropic, CHAT_MODEL } from "@/lib/claudeClient";
+import {
+  generateChatReply,
+  isProviderConfigured,
+  type ChatMessage,
+} from "@/lib/chatProvider";
 import { buildSystemPrompt } from "@/lib/buildSystemPrompt";
 
 // Route ini butuh akses filesystem (baca system-prompt.md) & env var server,
@@ -30,11 +34,6 @@ function isRateLimited(ip: string): boolean {
 const MAX_HISTORY_MESSAGES = 10; // hanya kirim 10 pesan terakhir (kontrol biaya token)
 const MAX_MESSAGE_LENGTH = 1000; // karakter maksimal per pesan user
 
-interface IncomingMessage {
-  role: "user" | "assistant";
-  content: string;
-}
-
 export async function POST(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
@@ -51,7 +50,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!isProviderConfigured()) {
     return NextResponse.json(
       {
         error:
@@ -79,9 +78,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const messages: IncomingMessage[] = (rawMessages as IncomingMessage[])
+  const messages: ChatMessage[] = (rawMessages as ChatMessage[])
     .slice(-MAX_HISTORY_MESSAGES)
-    .map((m): IncomingMessage => ({
+    .map((m): ChatMessage => ({
       role: m?.role === "assistant" ? "assistant" : "user",
       content: String(m?.content ?? "").slice(0, MAX_MESSAGE_LENGTH),
     }))
@@ -97,22 +96,15 @@ export async function POST(req: NextRequest) {
   try {
     const system = buildSystemPrompt();
 
-    const response = await anthropic.messages.create({
-      model: CHAT_MODEL,
-      max_tokens: 512,
-      system,
-      messages,
-    });
-
-    const textBlock = response.content.find((block) => block.type === "text");
+    const answerText = await generateChatReply(system, messages);
 
     const answer =
-      (textBlock && "text" in textBlock ? textBlock.text.trim() : "") ||
+      answerText.trim() ||
       "Maaf, saya belum bisa menjawab pertanyaan itu sekarang. Coba tanya lagi dengan cara lain, ya.";
 
     return NextResponse.json({ answer });
   } catch (error) {
-    console.error("[api/chat] Claude API error:", error);
+    console.error("[api/chat] Chat provider error:", error);
     return NextResponse.json(
       {
         error:
