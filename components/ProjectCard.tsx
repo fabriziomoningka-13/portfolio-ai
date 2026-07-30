@@ -21,6 +21,7 @@ export function ProjectCard({ project }: { project: Project }) {
           src={project.thumbnail}
           alt={project.title}
           fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover opacity-90 transition-opacity group-hover:opacity-100"
         />
       </div>

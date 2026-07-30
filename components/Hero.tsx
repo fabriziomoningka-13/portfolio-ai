@@ -35,6 +35,8 @@ export function Hero() {
             src={profile.avatarUrl}
             alt={profile.name}
             fill
+            sizes="(max-width: 640px) 160px, (max-width: 768px) 208px, 256px"
+            priority
             className="object-cover"
           />
         </div>
