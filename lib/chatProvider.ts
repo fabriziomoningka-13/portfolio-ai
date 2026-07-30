@@ -66,3 +66,43 @@ export async function generateChatReply(
   const textBlock = response.content.find((b) => b.type === "text");
   return (textBlock && "text" in textBlock ? textBlock.text.trim() : "") || "";
 }
+
+/**
+ * Versi streaming: menghasilkan jawaban secara bertahap (potongan teks demi
+ * potongan) supaya UI bisa menampilkan efek "typing" real-time, bukan
+ * menunggu jawaban lengkap dulu baru muncul.
+ */
+export async function* streamChatReply(
+  system: string,
+  messages: ChatMessage[]
+): AsyncGenerator<string> {
+  if (PROVIDER === "groq") {
+    const stream = await groq.chat.completions.create({
+      model: GROQ_MODEL,
+      max_tokens: 512,
+      messages: [{ role: "system", content: system }, ...messages],
+      stream: true,
+    });
+    for await (const chunk of stream) {
+      const delta = chunk.choices[0]?.delta?.content;
+      if (delta) yield delta;
+    }
+    return;
+  }
+
+  // Default: Anthropic (Claude API)
+  const stream = anthropic.messages.stream({
+    model: ANTHROPIC_MODEL,
+    max_tokens: 512,
+    system,
+    messages,
+  });
+  for await (const event of stream) {
+    if (
+      event.type === "content_block_delta" &&
+      event.delta.type === "text_delta"
+    ) {
+      yield event.delta.text;
+    }
+  }
+}

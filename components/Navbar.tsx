@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import profile from "@/data/profile.json";
+import { useChatWidget } from "@/components/ChatWidgetContext";
 
 const links = [
   { href: "#home", label: "Home" },
@@ -16,6 +17,7 @@ const links = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { setOpen: setChatOpen } = useChatWidget();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -50,7 +52,7 @@ export function Navbar() {
         </ul>
 
         <div className="hidden md:block">
-          <Button size="sm" variant="solid">
+          <Button size="sm" variant="solid" onClick={() => setChatOpen(true)}>
             <MessageCircle className="size-4" /> Chat with AI
           </Button>
         </div>
@@ -79,7 +81,15 @@ export function Navbar() {
               </li>
             ))}
             <li className="pt-2">
-              <Button size="sm" variant="solid" className="w-full">
+              <Button
+                size="sm"
+                variant="solid"
+                className="w-full"
+                onClick={() => {
+                  setOpen(false);
+                  setChatOpen(true);
+                }}
+              >
                 <MessageCircle className="size-4" /> Chat with AI
               </Button>
             </li>

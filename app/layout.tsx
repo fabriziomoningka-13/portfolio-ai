@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import profile from "@/data/profile.json";
+import { ChatWidgetProvider } from "@/components/ChatWidgetContext";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -37,7 +38,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-dark-base text-text-primary">
-        {children}
+        <ChatWidgetProvider>{children}</ChatWidgetProvider>
       </body>
     </html>
   );

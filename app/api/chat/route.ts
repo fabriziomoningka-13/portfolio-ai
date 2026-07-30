@@ -1,44 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  generateChatReply,
-  isProviderConfigured,
-  type ChatMessage,
-} from "@/lib/chatProvider";
+import { generateChatReply, isProviderConfigured } from "@/lib/chatProvider";
 import { buildSystemPrompt } from "@/lib/buildSystemPrompt";
+import { getClientIp, isRateLimited, extractMessages } from "@/lib/chatGuard";
 
 // Route ini butuh akses filesystem (baca system-prompt.md) & env var server,
 // jadi jalankan di Node.js runtime, bukan Edge runtime.
 export const runtime = "nodejs";
 
-// ---------------------------------------------------------------------------
-// Guardrail teknis (sesuai Bagian 1.3 & 4.2 dokumen roadmap):
-// - Rate limit per IP (in-memory, cukup untuk skala portfolio single-instance)
-// - Batasi jumlah pesan riwayat & panjang tiap pesan yang dikirim ke API
-// - Fallback response kalau API key belum di-set / Claude API error
-// ---------------------------------------------------------------------------
-
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 menit
-const RATE_LIMIT_MAX_REQUESTS = 20; // maksimal 20 pesan / 10 menit / IP
-const requestLog = new Map<string, number[]>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (requestLog.get(ip) ?? []).filter(
-    (t) => now - t < RATE_LIMIT_WINDOW_MS
-  );
-  recent.push(now);
-  requestLog.set(ip, recent);
-  return recent.length > RATE_LIMIT_MAX_REQUESTS;
-}
-
-const MAX_HISTORY_MESSAGES = 10; // hanya kirim 10 pesan terakhir (kontrol biaya token)
-const MAX_MESSAGE_LENGTH = 1000; // karakter maksimal per pesan user
-
+/**
+ * Endpoint non-streaming: mengembalikan jawaban lengkap sekaligus dalam JSON.
+ * Cocok untuk testing manual (curl/Postman/Invoke-RestMethod) & integrasi lain.
+ * Untuk widget chat di UI, lihat /api/chat/stream (efek typing real-time).
+ */
 export async function POST(req: NextRequest) {
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
+  const ip = getClientIp(req);
 
   if (isRateLimited(ip)) {
     return NextResponse.json(
@@ -70,22 +45,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const rawMessages = (body as { messages?: unknown })?.messages;
-  if (!Array.isArray(rawMessages) || rawMessages.length === 0) {
-    return NextResponse.json(
-      { error: "Pesan tidak boleh kosong." },
-      { status: 400 }
-    );
-  }
-
-  const messages: ChatMessage[] = (rawMessages as ChatMessage[])
-    .slice(-MAX_HISTORY_MESSAGES)
-    .map((m): ChatMessage => ({
-      role: m?.role === "assistant" ? "assistant" : "user",
-      content: String(m?.content ?? "").slice(0, MAX_MESSAGE_LENGTH),
-    }))
-    .filter((m) => m.content.trim().length > 0);
-
+  const messages = extractMessages(body);
   if (messages.length === 0) {
     return NextResponse.json(
       { error: "Pesan tidak boleh kosong." },
@@ -95,7 +55,6 @@ export async function POST(req: NextRequest) {
 
   try {
     const system = buildSystemPrompt();
-
     const answerText = await generateChatReply(system, messages);
 
     const answer =
