@@ -23,7 +23,7 @@ export function Projects() {
       <Reveal delay={0.1} className="mt-10 flex justify-center">
         <Button asChild size="lg" variant="outline">
           <Link href="/projects">
-            Lihat Semua Project <ArrowRight className="size-4" />
+            View All Projects <ArrowRight className="size-4" />
           </Link>
         </Button>
       </Reveal>

@@ -9,8 +9,8 @@ import profile from "@/data/profile.json";
 import projectsData from "@/data/projects.json";
 
 export const metadata: Metadata = {
-  title: `Semua Project — ${profile.name}`,
-  description: `Kumpulan lengkap project yang pernah dikerjakan oleh ${profile.name}.`,
+  title: `All Projects — ${profile.name}`,
+  description: `A complete collection of projects built by ${profile.name}.`,
 };
 
 export default function ProjectsPage() {
@@ -22,11 +22,11 @@ export default function ProjectsPage() {
       <main id="main-content" className="mx-auto max-w-6xl px-6 py-16">
         <Reveal>
           <h1 className="font-heading text-3xl font-bold sm:text-4xl">
-            Semua Project
+            All Projects
           </h1>
           <p className="mt-3 max-w-2xl text-text-muted">
-            Kumpulan lengkap project yang pernah saya kerjakan — mulai dari
-            aplikasi fullstack, eksperimen AI, hingga project pribadi.
+            A complete collection of projects I&apos;ve worked on — from
+            fullstack applications and AI experiments to personal projects.
           </p>
         </Reveal>
 

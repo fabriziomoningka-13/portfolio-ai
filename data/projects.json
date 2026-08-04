@@ -6,7 +6,15 @@
     "tech": ["Next.js", "Tailwind CSS", "Node.js", "MySQL", "Prisma", "JWT", "Zod", "Google Gemini API"],
     "thumbnail": "/images/projects/desa-suluan.png",
     "demoUrl": "https://suluan-project.vercel.app",
-    "githubUrl": "https://github.com/fabriziomoningka-13"
+    "githubUrl": "https://github.com/fabriziomoningka-13",
+    "period": "2026",
+    "context": "Individu · Live di production",
+    "highlights": [
+      "Merancang dan membangun sistem informasi desa fullstack secara mandiri end-to-end — mencakup profil & pemerintahan desa, berita, pengumuman resmi, layanan surat-menyurat online dengan verifikasi keaslian dokumen berbasis QR code, transparansi keuangan desa (APBDes), statistik kependudukan, dan pengaduan masyarakat — dengan dashboard admin (CMS) ber-RBAC 3 tingkat, UI mobile-first, dan design system reusable.",
+      "Menerapkan autentikasi JWT (access & refresh token via httpOnly cookie), masking data sensitif (NIK), rate limiting, dan audit log untuk menjaga keamanan sistem dan data warga.",
+      "Mengintegrasikan chatbot asisten berbasis Google Gemini API dengan konteks data desa real-time (grounded response) serta modul unggah multi-foto bergaleri carousel.",
+      "Men-deploy sistem ke lingkungan production (frontend di Vercel, backend & database di Railway) termasuk konfigurasi keamanan cross-domain (CORS, cookie SameSite, CSRF token)."
+    ]
   },
   {
     "slug": "studio-ai",
@@ -15,7 +23,14 @@
     "tech": ["Next.js", "Tailwind CSS", "Framer Motion", "Claude API", "Gemini API", "Groq"],
     "thumbnail": "/images/projects/studio-ai.png",
     "demoUrl": "https://studio-ai-steel.vercel.app",
-    "githubUrl": "https://github.com/fabriziomoningka-13"
+    "githubUrl": "https://github.com/fabriziomoningka-13",
+    "period": "2026",
+    "context": "Individu",
+    "highlights": [
+      "Membangun web app AI portofolio yang generate copy dan tema visual landing page (headline, palet warna, pasangan font) secara instan, mengintegrasikan Anthropic Claude API sebagai provider utama dengan strategi fallback otomatis ke Google Gemini dan Groq untuk menjaga reliabilitas tanpa biaya tambahan.",
+      "Merancang backend (Next.js API Routes) dengan rate limiting, sanitasi input, guard prompt injection, serta validasi skema JSON dari AI dengan mekanisme retry otomatis saat parsing gagal.",
+      "Mendesain dashboard real-time preview dengan animasi staged (Framer Motion), skeleton loading, empty state, dan aksesibilitas (kontras WCAG AA); menulis 24 automated test untuk edge case response AI."
+    ]
   },
   {
     "slug": "developer-portfolio-website",
@@ -24,6 +39,12 @@
     "tech": ["HTML5", "CSS3", "JavaScript"],
     "thumbnail": "/images/projects/developer-portfolio.png",
     "demoUrl": "https://fabriziomoningka-13.github.io/developer-portfolio",
-    "githubUrl": "https://github.com/fabriziomoningka-13"
+    "githubUrl": "https://github.com/fabriziomoningka-13",
+    "period": "2026",
+    "context": "Individu",
+    "highlights": [
+      "Membangun website portofolio pribadi dari nol tanpa framework, dengan struktur kode modular (CSS & JS terpisah per fungsi) untuk kemudahan maintenance.",
+      "Mengimplementasikan fitur interaktif (dark/light theme switcher, typing effect, scrollspy navigation, loading screen) dengan desain responsif untuk menampilkan personal branding, proyek, dan keahlian."
+    ]
   }
 ]
