@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,11 +8,11 @@ import profile from "@/data/profile.json";
 import { useChatWidget } from "@/components/ChatWidgetContext";
 
 const links = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#home", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/projects", label: "Projects" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Navbar() {
@@ -34,19 +35,19 @@ export function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#home" className="font-heading text-lg font-bold text-text-primary">
+        <Link href="/#home" className="font-heading text-lg font-bold text-text-primary">
           {profile.name}
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
             <li key={link.href}>
-              <a
+              <Link
                 href={link.href}
                 className="text-sm text-text-muted transition-colors hover:text-teal-primary"
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -71,13 +72,13 @@ export function Navbar() {
           <ul className="flex flex-col gap-1 px-6 py-4">
             {links.map((link) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className="block py-2 text-sm text-text-muted hover:text-teal-primary"
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li className="pt-2">
