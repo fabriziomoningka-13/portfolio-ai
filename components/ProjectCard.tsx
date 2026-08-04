@@ -15,7 +15,7 @@ export interface Project {
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-dark-surface transition-all hover:-translate-y-1 hover:border-teal-primary hover:shadow-lg hover:shadow-teal-primary/10">
+    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-dark-surface transition-colors hover:border-teal-primary hover:shadow-lg hover:shadow-teal-primary/10">
       <div className="relative h-44 w-full bg-dark-base">
         <Image
           src={project.thumbnail}

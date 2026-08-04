@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, type ReactNode } from "react";
+import { MotionConfig } from "framer-motion";
 
 interface ChatWidgetContextValue {
   open: boolean;
@@ -13,7 +14,7 @@ export function ChatWidgetProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
     <ChatWidgetContext.Provider value={{ open, setOpen }}>
-      {children}
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </ChatWidgetContext.Provider>
   );
 }

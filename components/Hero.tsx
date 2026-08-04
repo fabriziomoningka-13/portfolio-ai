@@ -1,7 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Download, FolderKanban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import profile from "@/data/profile.json";
+import { fadeUp } from "@/lib/motion";
 
 export function Hero() {
   return (
@@ -9,7 +13,12 @@ export function Hero() {
       id="home"
       className="mx-auto flex max-w-6xl flex-col-reverse items-center gap-10 px-6 py-20 md:flex-row md:justify-between md:py-28"
     >
-      <div className="flex max-w-xl flex-col items-center gap-5 text-center md:items-start md:text-left">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+        className="flex max-w-xl flex-col items-center gap-5 text-center md:items-start md:text-left"
+      >
         <h1 className="font-heading text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
           {profile.tagline}
         </h1>
@@ -26,21 +35,30 @@ export function Hero() {
             </a>
           </Button>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="relative size-40 shrink-0 sm:size-52 md:size-64">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-teal-primary to-green-accent opacity-70 blur-md" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+        className="relative size-40 shrink-0 sm:size-52 md:size-64"
+      >
+        <motion.div
+          animate={{ opacity: [0.5, 0.85, 0.5] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 rounded-full bg-gradient-to-br from-teal-primary to-green-accent blur-md"
+        />
         <div className="absolute inset-1 overflow-hidden rounded-full bg-dark-surface">
           <Image
             src={profile.avatarUrl}
-            alt={profile.name}
+            alt={`Foto profil ${profile.name}`}
             fill
             sizes="(max-width: 640px) 160px, (max-width: 768px) 208px, 256px"
             priority
             className="object-cover"
           />
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

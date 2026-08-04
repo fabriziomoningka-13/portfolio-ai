@@ -61,3 +61,15 @@ code, pre, kbd {
   backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
 }
+
+/* Aksesibilitas: hormati preferensi pengguna yang sensitif terhadap animasi/motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
