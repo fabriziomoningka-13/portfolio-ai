@@ -115,11 +115,14 @@ export function ChatWidget() {
         <div className="glass flex h-[28rem] w-[22rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl shadow-2xl shadow-black/40">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border bg-dark-surface/80 px-4 py-3">
-            <div className="flex items-center gap-2">
-              <Bot className="size-5 text-teal-primary" />
-              <span className="text-sm font-semibold text-text-primary">
-                Tanya tentang saya
-              </span>
+            <div className="flex items-center gap-2.5">
+              <div className="flex size-8 items-center justify-center rounded-full bg-teal-primary/15">
+                <Bot className="size-4 text-teal-primary" />
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-sm font-semibold text-text-primary">Vanessa</span>
+                <span className="text-[11px] text-text-muted">AI Assistant</span>
+              </div>
             </div>
             <button
               aria-label="Tutup chat"
@@ -135,7 +138,7 @@ export function ChatWidget() {
             {messages.length === 0 && (
               <div className="flex flex-col gap-3">
                 <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-dark-surface px-3 py-2 text-sm text-text-primary">
-                  Halo! Tanyakan skill, pengalaman, atau project {profile.name.split(" ")[0]} 👋
+                  Halo! Saya Vanessa 👋 Tanyakan skill, pengalaman, atau project {profile.name.split(" ")[0]} yuk.
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_CHIPS.map((chip) => (
@@ -208,7 +211,7 @@ export function ChatWidget() {
       {/* Floating toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        aria-label={open ? "Tutup chat" : "Buka chat"}
+        aria-label={open ? "Tutup chat dengan Vanessa" : "Buka chat dengan Vanessa"}
         className="glow-teal relative flex size-14 items-center justify-center rounded-full bg-teal-primary text-dark-base transition-transform hover:scale-105"
       >
         {!open && (

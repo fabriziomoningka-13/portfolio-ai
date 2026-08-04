@@ -1,5 +1,8 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import profile from "@/data/profile.json";
 import { Reveal } from "@/components/Reveal";
+import { Button } from "@/components/ui/button";
 
 export function About() {
   return (
@@ -15,6 +18,11 @@ export function About() {
               {p}
             </p>
           ))}
+          <Button asChild variant="outline" className="mt-2 self-start">
+            <Link href="/about">
+              Read Full Story <ArrowRight className="size-4" />
+            </Link>
+          </Button>
         </Reveal>
 
         <Reveal delay={0.2} className="grid grid-cols-3 gap-4 md:grid-cols-1">

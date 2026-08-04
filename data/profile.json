@@ -8,27 +8,67 @@
   "resumeUrl": "/files/cv-fabrizio-kevin-moningka.pdf",
   "about": {
     "paragraphs": [
-      "I'm a recent Computer Science graduate with hands-on experience building fullstack web applications independently — from database design and backend architecture to user interface development.",
-      "I'm comfortable working with Next.js, Node.js, and MySQL, and I have a strong interest in UI/visual design and applying AI & automation (n8n) in digital product development.",
-      "Adobe-certified in visual design, I'm a fast learner who's used to seeing projects through from planning to implementation without supervision."
+      "I'm a recent Computer Science graduate with hands-on experience building fullstack web applications independently — from database design and backend architecture to user interface development."
+    ],
+    "extendedParagraphs": [
+      "I'm a recent Computer Science graduate from Universitas Klabat with hands-on experience building fullstack web applications independently — from database design and backend architecture, to user interface development, all the way to production deployment.",
+      "I'm comfortable working with Next.js, Node.js, and MySQL, and I have a strong interest in UI/visual design and applying AI & automation (n8n) in digital product development. My biggest project so far, a fullstack village information system, taught me how to think end-to-end: not just writing code, but designing secure authentication, protecting sensitive citizen data, and shipping to real production infrastructure.",
+      "Beyond web development, I'm Adobe-certified in visual design and genuinely enjoy the intersection of engineering and design — making sure the things I build are not just functional, but also feel good to use.",
+      "I'm a fast learner who's used to seeing projects through from planning to implementation without supervision, and I'm always looking for the next problem worth solving."
     ],
     "highlights": [
       { "label": "Live Projects", "value": "3+" },
       { "label": "Adobe Certification", "value": "1" },
-      { "label": "Tech Stacks", "value": "10+" }
+      { "label": "Tech Stacks", "value": "20+" }
     ]
   },
   "skills": [
-    "Next.js",
+    "JavaScript",
     "TypeScript",
-    "Node.js",
-    "MySQL",
-    "Tailwind CSS",
-    "Prisma",
-    "RESTful API",
-    "Adobe Photoshop",
     "Python",
-    "GitHub Actions"
+    "C#",
+    "HTML5",
+    "CSS3",
+    "SQL",
+    "Next.js (React)",
+    "Tailwind CSS",
+    "Node.js (Express)",
+    "Prisma",
+    "MySQL",
+    "JWT",
+    "RESTful API",
+    "Vercel",
+    "Railway",
+    "GitHub Actions (CI/CD)",
+    "Google Gemini API",
+    "Adobe Photoshop",
+    "UI/UX Design",
+    "Responsive Web Design",
+    "Database Design",
+    "RBAC & App Security",
+    "AI & Automation (n8n)"
+  ],
+  "certifications": [
+    {
+      "title": "Adobe Certified Professional — Visual Design Using Adobe Photoshop",
+      "issuer": "Adobe",
+      "year": "2025"
+    },
+    {
+      "title": "Participant, PROXOCORIS 2024 National IT Competition — UI/UX Design",
+      "issuer": "Fakultas Ilmu Komputer Universitas Klabat x CORIS",
+      "year": "2024"
+    }
+  ],
+  "languages": [
+    { "name": "Indonesian", "level": "Native" },
+    { "name": "English", "level": "Professional working proficiency" }
+  ],
+  "softSkills": [
+    "Problem Solving",
+    "Fast Learner",
+    "Independent Work",
+    "Time Management"
   ],
   "experience": [
     {
