@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import profile from "@/data/profile.json";
 import { ChatWidgetProvider } from "@/components/ChatWidgetContext";
+import { SplashScreen } from "@/components/SplashScreen";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -52,7 +53,10 @@ export default function RootLayout({
           <div className="absolute top-1/3 -right-32 size-[24rem] rounded-full bg-green-accent/10 blur-[100px]" />
         </div>
 
-        <ChatWidgetProvider>{children}</ChatWidgetProvider>
+        <ChatWidgetProvider>
+          <SplashScreen />
+          {children}
+        </ChatWidgetProvider>
       </body>
     </html>
   );
