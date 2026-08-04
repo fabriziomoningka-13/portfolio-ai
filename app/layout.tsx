@@ -44,6 +44,14 @@ export default function RootLayout({
         >
           Lewati ke konten utama
         </a>
+
+        {/* Dekorasi background ambient — dot-grid + gradient orbs, di belakang semua konten */}
+        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+          <div className="bg-dot-grid absolute inset-0" />
+          <div className="absolute -top-32 left-1/4 size-[28rem] rounded-full bg-teal-primary/10 blur-[100px]" />
+          <div className="absolute top-1/3 -right-32 size-[24rem] rounded-full bg-green-accent/10 blur-[100px]" />
+        </div>
+
         <ChatWidgetProvider>{children}</ChatWidgetProvider>
       </body>
     </html>

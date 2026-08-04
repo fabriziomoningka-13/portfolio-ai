@@ -48,6 +48,56 @@
     "RBAC & App Security",
     "AI & Automation (n8n)"
   ],
+  "skillsPreview": [
+    "JavaScript",
+    "TypeScript",
+    "Next.js (React)",
+    "Tailwind CSS",
+    "Node.js (Express)",
+    "MySQL",
+    "Prisma",
+    "RESTful API",
+    "Adobe Photoshop",
+    "UI/UX Design"
+  ],
+  "skillCategories": [
+    {
+      "name": "Languages",
+      "items": ["JavaScript", "TypeScript", "Python", "C#", "SQL"]
+    },
+    {
+      "name": "Markup & Styling",
+      "items": ["HTML5", "CSS3"]
+    },
+    {
+      "name": "Frameworks & Tools",
+      "items": [
+        "Next.js (React)",
+        "Tailwind CSS",
+        "Node.js (Express)",
+        "Prisma",
+        "MySQL",
+        "JWT",
+        "Vercel",
+        "Railway",
+        "GitHub Actions (CI/CD)",
+        "Google Gemini API"
+      ]
+    },
+    {
+      "name": "Design & Visual",
+      "items": ["Adobe Photoshop", "UI/UX Design", "Responsive Web Design"]
+    },
+    {
+      "name": "Concepts",
+      "items": [
+        "RESTful API",
+        "Database Design",
+        "RBAC & App Security",
+        "AI & Automation (n8n)"
+      ]
+    }
+  ],
   "certifications": [
     {
       "title": "Adobe Certified Professional — Visual Design Using Adobe Photoshop",

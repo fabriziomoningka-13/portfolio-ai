@@ -62,6 +62,22 @@ code, pre, kbd {
   border: 1px solid var(--color-border);
 }
 
+/* Gradient text — dipakai untuk nama di Hero & aksen judul supaya terasa premium */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-teal-primary), var(--color-green-accent));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Pola dot-grid halus di background — nuansa "engineering" tanpa mengganggu keterbacaan */
+.bg-dot-grid {
+  background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+}
+
 /* Aksesibilitas: hormati preferensi pengguna yang sensitif terhadap animasi/motion */
 @media (prefers-reduced-motion: reduce) {
   *,

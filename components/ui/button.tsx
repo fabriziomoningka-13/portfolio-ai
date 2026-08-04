@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         solid:
-          "bg-teal-primary text-dark-base hover:bg-teal-deep hover:scale-[1.02] glow-teal",
+          "bg-gradient-to-r from-teal-primary to-green-accent text-dark-base hover:brightness-110 hover:scale-[1.02] glow-teal",
         outline:
           "border border-teal-primary text-teal-primary hover:bg-teal-primary/10",
         ghost: "text-text-muted hover:text-text-primary hover:bg-dark-surface",

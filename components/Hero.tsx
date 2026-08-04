@@ -19,7 +19,15 @@ export function Hero() {
         variants={fadeUp}
         className="flex max-w-xl flex-col items-center gap-5 text-center md:items-start md:text-left"
       >
-        <h1 className="font-heading text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
+        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-dark-surface px-3 py-1.5 text-xs text-text-muted">
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-accent opacity-75" />
+            <span className="relative inline-flex size-2 rounded-full bg-green-accent" />
+          </span>
+          Available for new opportunities
+        </span>
+
+        <h1 className="gradient-text font-heading text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
           {profile.tagline}
         </h1>
         <p className="text-lg text-text-muted">{profile.subtitle}</p>
