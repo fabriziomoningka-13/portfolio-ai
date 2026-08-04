@@ -2,20 +2,20 @@
   "name": "Fabrizio Kevin Moningka",
   "role": "Fullstack Developer",
   "focus": "UI/Visual Design & AI Automation",
-  "tagline": "Halo, saya Fabrizio Kevin Moningka 👋",
+  "tagline": "Fabrizio Kevin Moningka",
   "subtitle": "Fullstack Developer • UI/Visual Design • AI & Automation",
   "avatarUrl": "/images/avatar.jpg",
   "resumeUrl": "/files/cv-fabrizio-kevin-moningka.pdf",
   "about": {
     "paragraphs": [
-      "Saya lulusan baru S1 Information Technology dengan pengalaman membangun aplikasi web fullstack secara mandiri — mulai dari perancangan basis data dan arsitektur backend, hingga antarmuka pengguna.",
-      "Terbiasa bekerja dengan Next.js, Node.js, dan MySQL, serta memiliki ketertarikan kuat pada UI/visual design dan penerapan AI & automation (n8n) dalam pengembangan produk digital.",
-      "Bersertifikasi Adobe untuk visual design, cepat belajar, dan terbiasa menuntaskan proyek dari perencanaan hingga implementasi tanpa supervisi."
+      "I'm a recent Computer Science graduate with hands-on experience building fullstack web applications independently — from database design and backend architecture to user interface development.",
+      "I'm comfortable working with Next.js, Node.js, and MySQL, and I have a strong interest in UI/visual design and applying AI & automation (n8n) in digital product development.",
+      "Adobe-certified in visual design, I'm a fast learner who's used to seeing projects through from planning to implementation without supervision."
     ],
     "highlights": [
-      { "label": "Project Live", "value": "3+" },
-      { "label": "Sertifikasi Adobe", "value": "1" },
-      { "label": "Tech Stack Dikuasai", "value": "10+" }
+      { "label": "Live Projects", "value": "3+" },
+      { "label": "Adobe Certification", "value": "1" },
+      { "label": "Tech Stacks", "value": "10+" }
     ]
   },
   "skills": [
@@ -41,7 +41,7 @@
   "education": [
     {
       "institution": "Universitas Klabat — Airmadidi, Sulawesi Utara",
-      "degree": "S1 Information Technology",
+      "degree": "S1 Informatika (Computer Science)",
       "period": "Agustus 2021 — Januari 2026"
     }
   ],

@@ -10,7 +10,7 @@ export function Contact() {
   return (
     <section id="contact" className="mx-auto max-w-6xl px-6 py-20">
       <Reveal>
-        <h2 className="mb-8 font-heading text-2xl font-bold sm:text-3xl">Mari Terhubung</h2>
+        <h2 className="mb-8 font-heading text-2xl font-bold sm:text-3xl">Contact Me</h2>
       </Reveal>
 
       <div className="grid gap-10 md:grid-cols-2">
