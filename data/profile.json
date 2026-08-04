@@ -1,60 +1,54 @@
 {
-  "name": "Budi Santoso",
-  "role": "Software Engineer",
-  "focus": "AI & Web Development",
-  "tagline": "Halo, saya Budi Santoso 👋",
-  "subtitle": "Software Engineer • Fokus AI & Web Development",
+  "name": "Fabrizio Kevin Moningka",
+  "role": "Fullstack Developer",
+  "focus": "UI/Visual Design & AI Automation",
+  "tagline": "Halo, saya Fabrizio Kevin Moningka 👋",
+  "subtitle": "Fullstack Developer • UI/Visual Design • AI & Automation",
   "avatarUrl": "/images/avatar.jpg",
-  "resumeUrl": "/files/cv-budi-santoso.pdf",
+  "resumeUrl": "/files/cv-fabrizio-kevin-moningka.pdf",
   "about": {
     "paragraphs": [
-      "Saya adalah software engineer dengan pengalaman 2 tahun membangun aplikasi web modern menggunakan React, Next.js, dan Node.js.",
-      "Belakangan ini saya fokus mendalami AI/LLM engineering, khususnya penerapan RAG (Retrieval Augmented Generation) untuk membangun produk berbasis AI yang aman dan terarah (scoped).",
-      "Saya senang mengerjakan project end-to-end: dari desain UI, backend API, sampai deployment production."
+      "Saya lulusan baru S1 Information Technology dengan pengalaman membangun aplikasi web fullstack secara mandiri — mulai dari perancangan basis data dan arsitektur backend, hingga antarmuka pengguna.",
+      "Terbiasa bekerja dengan Next.js, Node.js, dan MySQL, serta memiliki ketertarikan kuat pada UI/visual design dan penerapan AI & automation (n8n) dalam pengembangan produk digital.",
+      "Bersertifikasi Adobe untuk visual design, cepat belajar, dan terbiasa menuntaskan proyek dari perencanaan hingga implementasi tanpa supervisi."
     ],
     "highlights": [
-      { "label": "Tahun Pengalaman", "value": "2+" },
-      { "label": "Project Selesai", "value": "10+" },
-      { "label": "Teknologi Dikuasai", "value": "8+" }
+      { "label": "Project Live", "value": "3+" },
+      { "label": "Sertifikasi Adobe", "value": "1" },
+      { "label": "Tech Stack Dikuasai", "value": "10+" }
     ]
   },
   "skills": [
-    "React",
     "Next.js",
     "TypeScript",
     "Node.js",
+    "MySQL",
+    "Tailwind CSS",
+    "Prisma",
+    "RESTful API",
+    "Adobe Photoshop",
     "Python",
-    "Tailwind",
-    "PostgreSQL",
-    "Docker",
-    "Claude API",
-    "Git"
+    "GitHub Actions"
   ],
   "experience": [
     {
-      "company": "PT Contoh Teknologi Indonesia",
-      "position": "Frontend Engineer",
-      "period": "Jan 2024 — Sekarang",
-      "description": "Mengembangkan dan memelihara aplikasi web berbasis Next.js untuk produk internal, berkolaborasi dengan tim desain dan backend."
-    },
-    {
-      "company": "Startup XYZ",
-      "position": "Junior Web Developer",
-      "period": "Jul 2022 — Des 2023",
-      "description": "Membangun fitur landing page dan dashboard admin menggunakan React dan REST API."
+      "company": "Freelance / Proyek Mandiri",
+      "position": "Fullstack Developer",
+      "period": "2025 — Sekarang",
+      "description": "Merancang dan membangun aplikasi web fullstack secara end-to-end secara mandiri, dari basis data, backend, hingga UI — termasuk sistem informasi desa production-ready dan web app berbasis AI."
     }
   ],
   "education": [
     {
-      "institution": "Universitas Contoh",
-      "degree": "S1 Teknik Informatika",
-      "period": "2018 — 2022"
+      "institution": "Universitas Klabat — Airmadidi, Sulawesi Utara",
+      "degree": "S1 Information Technology",
+      "period": "Agustus 2021 — Januari 2026"
     }
   ],
   "contact": {
-    "email": "budi.santoso@email.com",
-    "linkedin": "https://linkedin.com/in/budisantoso",
-    "github": "https://github.com/budisantoso",
-    "location": "Jakarta, Indonesia"
+    "email": "kevinkmoningka@gmail.com",
+    "linkedin": "https://linkedin.com/in/fabrizio-kevin-moningka-710598419",
+    "github": "https://github.com/fabriziomoningka-13",
+    "location": "Tangerang Selatan, Banten"
   }
 }

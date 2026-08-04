@@ -1,29 +1,29 @@
 [
   {
-    "slug": "portfolio-ai-chatbot",
-    "title": "Portfolio Website + AI Chatbot",
-    "description": "Website portfolio pribadi dengan chatbot AI berbasis RAG yang hanya menjawab pertanyaan seputar skill, pengalaman, dan project saya.",
-    "tech": ["Next.js", "TypeScript", "TailwindCSS", "Claude API"],
-    "thumbnail": "/images/projects/portfolio-ai.png",
-    "demoUrl": "https://your-portfolio.vercel.app",
-    "githubUrl": "https://github.com/username/portfolio-ai"
+    "slug": "platform-digital-desa-suluan",
+    "title": "Platform Digital Desa Suluan",
+    "description": "Sistem informasi desa fullstack — profil desa, berita, layanan surat-menyurat online dengan verifikasi QR code, transparansi keuangan (APBDes), statistik kependudukan, pengaduan masyarakat, dan dashboard admin ber-RBAC 3 tingkat. Dilengkapi chatbot asisten berbasis Google Gemini API dengan konteks data desa real-time.",
+    "tech": ["Next.js", "Tailwind CSS", "Node.js", "MySQL", "Prisma", "JWT", "Zod", "Google Gemini API"],
+    "thumbnail": "/images/projects/desa-suluan.png",
+    "demoUrl": "https://suluan-project.vercel.app",
+    "githubUrl": "https://github.com/fabriziomoningka-13"
   },
   {
-    "slug": "project-two",
-    "title": "Project Two",
-    "description": "Deskripsi singkat project kedua. Ganti dengan project nyata milik kamu beserta tech stack yang dipakai.",
-    "tech": ["React", "Node.js", "PostgreSQL"],
-    "thumbnail": "/images/projects/project-two.png",
-    "demoUrl": "https://example.com",
-    "githubUrl": "https://github.com/username/project-two"
+    "slug": "studio-ai",
+    "title": "Studio AI",
+    "description": "Web app AI yang generate copy dan tema visual landing page (headline, palet warna, pasangan font) secara instan. Mengintegrasikan Anthropic Claude API sebagai provider utama dengan strategi fallback otomatis ke Google Gemini dan Groq untuk menjaga reliabilitas tanpa biaya tambahan.",
+    "tech": ["Next.js", "Tailwind CSS", "Framer Motion", "Claude API", "Gemini API", "Groq"],
+    "thumbnail": "/images/projects/studio-ai.png",
+    "demoUrl": "https://studio-ai-steel.vercel.app",
+    "githubUrl": "https://github.com/fabriziomoningka-13"
   },
   {
-    "slug": "project-three",
-    "title": "Project Three",
-    "description": "Deskripsi singkat project ketiga. Ganti dengan project nyata milik kamu beserta tech stack yang dipakai.",
-    "tech": ["Python", "Docker"],
-    "thumbnail": "/images/projects/project-three.png",
-    "demoUrl": "https://example.com",
-    "githubUrl": "https://github.com/username/project-three"
+    "slug": "developer-portfolio-website",
+    "title": "Developer Portfolio Website",
+    "description": "Website portofolio pribadi dibangun dari nol tanpa framework, dengan struktur kode modular (CSS & JS terpisah per fungsi). Fitur interaktif: dark/light theme switcher, typing effect, scrollspy navigation, dan loading screen dengan desain responsif.",
+    "tech": ["HTML5", "CSS3", "JavaScript"],
+    "thumbnail": "/images/projects/developer-portfolio.png",
+    "demoUrl": "https://fabriziomoningka-13.github.io/developer-portfolio",
+    "githubUrl": "https://github.com/fabriziomoningka-13"
   }
 ]
