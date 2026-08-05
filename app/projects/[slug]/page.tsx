@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ChatWidget } from "@/components/ChatWidget";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { GithubIcon } from "@/components/icons";
@@ -138,7 +137,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </Reveal>
       </main>
       <Footer />
-      <ChatWidget />
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { MessageCircle, X, Send, Bot, AlertCircle } from "lucide-react";
+import { MessageCircle, X, Send, Bot, AlertCircle, Mic, Square } from "lucide-react";
 import profile from "@/data/profile.json";
 import { useChatWidget } from "@/components/ChatWidgetContext";
 import { parseChatReply, hideInProgressMarker } from "@/lib/chatNavigation";
@@ -20,8 +20,19 @@ const QUICK_CHIPS = [
   "Pengalaman kerja?",
 ];
 
+const SPEECH_LANG = "id-ID";
+
 function createId() {
   return Math.random().toString(36).slice(2, 10);
+}
+
+/** Ucapkan teks lewat browser (gratis, bawaan browser - Web Speech API). */
+function speak(text: string) {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel(); // hentikan ucapan sebelumnya kalau ada yg masih jalan
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = SPEECH_LANG;
+  window.speechSynthesis.speak(utterance);
 }
 
 export function ChatWidget() {
@@ -29,14 +40,26 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [voiceSupported, setVoiceSupported] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
+  const transcriptRef = useRef("");
   const router = useRouter();
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
 
-  async function sendMessage(text: string) {
+  // Cek dukungan Web Speech API cuma di client (tidak ada di server-side render).
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    setVoiceSupported(Boolean(SR) && "speechSynthesis" in window);
+  }, []);
+
+  async function sendMessage(text: string, viaVoice = false) {
     const trimmed = text.trim();
     if (!trimmed || isStreaming) return;
 
@@ -98,12 +121,19 @@ export function ChatWidget() {
       // Cek apakah Vanessa menyisipkan marker navigasi tersembunyi di akhir
       // jawaban (lihat data/system-prompt.md bagian "Navigasi Otomatis").
       const { cleanText, navigateHref } = parseChatReply(fullText);
+      setMessages((prev) =>
+        prev.map((m) => (m.id === assistantId ? { ...m, content: cleanText } : m))
+      );
+
+      // Kalau pesan ini dikirim lewat suara, ucapkan balik jawabannya juga
+      // (voice chat dua arah) — tidak dilakukan kalau user mengetik biasa,
+      // supaya tidak mengganggu.
+      if (viaVoice) {
+        speak(cleanText);
+      }
+
       if (navigateHref) {
-        // Bersihkan marker dari teks yang ditampilkan ke user.
-        setMessages((prev) =>
-          prev.map((m) => (m.id === assistantId ? { ...m, content: cleanText } : m))
-        );
-        // Beri jeda sebentar supaya user sempat baca jawabannya dulu,
+        // Beri jeda sebentar supaya user sempat baca/dengar jawabannya dulu,
         // baru halaman berpindah otomatis.
         setTimeout(() => {
           router.push(navigateHref);
@@ -126,6 +156,53 @@ export function ChatWidget() {
     } finally {
       setIsStreaming(false);
     }
+  }
+
+  function startListening() {
+    if (!voiceSupported || isListening || isStreaming) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) return;
+
+    const recognition = new SR();
+    recognition.lang = SPEECH_LANG;
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    transcriptRef.current = "";
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    recognition.onresult = (event: any) => {
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      transcriptRef.current = transcript;
+      setInput(transcript); // tampilkan live transcript di kotak input
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+      const finalText = transcriptRef.current.trim();
+      transcriptRef.current = "";
+      if (finalText) {
+        setInput("");
+        sendMessage(finalText, true);
+      }
+    };
+
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsListening(true);
+  }
+
+  function stopListening() {
+    recognitionRef.current?.stop();
+    setIsListening(false);
   }
 
   return (
@@ -157,7 +234,7 @@ export function ChatWidget() {
             {messages.length === 0 && (
               <div className="flex flex-col gap-3">
                 <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-dark-surface px-3 py-2 text-sm text-text-primary">
-                  Halo! Saya Vanessa 👋 Tanyakan skill, pengalaman, atau project {profile.name.split(" ")[0]} yuk.
+                  Halo! Saya Vanessa 👋 Tanyakan skill, pengalaman, atau project {profile.name.split(" ")[0]} yuk — bisa ketik atau ngomong langsung.
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_CHIPS.map((chip) => (
@@ -198,6 +275,16 @@ export function ChatWidget() {
                 )}
               </div>
             ))}
+
+            {isListening && (
+              <div className="ml-auto flex max-w-[85%] items-center gap-2 rounded-2xl rounded-tr-sm bg-teal-primary/20 px-3 py-2 text-sm text-teal-primary">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-teal-primary opacity-75" />
+                  <span className="relative inline-flex size-2 rounded-full bg-teal-primary" />
+                </span>
+                Mendengarkan...
+              </div>
+            )}
           </div>
 
           {/* Input */}
@@ -211,13 +298,30 @@ export function ChatWidget() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ketik pertanyaan..."
-              disabled={isStreaming}
+              placeholder={isListening ? "Mendengarkan..." : "Ketik atau tekan mic untuk bicara..."}
+              disabled={isStreaming || isListening}
               className="flex-1 rounded-full border border-border bg-dark-base px-4 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-teal-primary focus:outline-none disabled:opacity-50"
             />
+
+            {voiceSupported && (
+              <button
+                type="button"
+                onClick={isListening ? stopListening : startListening}
+                disabled={isStreaming}
+                aria-label={isListening ? "Berhenti bicara" : "Bicara ke Vanessa"}
+                className={`flex size-9 shrink-0 items-center justify-center rounded-full transition-all disabled:opacity-40 ${
+                  isListening
+                    ? "bg-red-500 text-white hover:scale-105"
+                    : "border border-border text-text-muted hover:border-teal-primary hover:text-teal-primary"
+                }`}
+              >
+                {isListening ? <Square className="size-3.5" /> : <Mic className="size-4" />}
+              </button>
+            )}
+
             <button
               type="submit"
-              disabled={isStreaming || !input.trim()}
+              disabled={isStreaming || isListening || !input.trim()}
               aria-label="Kirim"
               className="flex size-9 shrink-0 items-center justify-center rounded-full bg-teal-primary text-dark-base transition-transform hover:scale-105 disabled:opacity-40 disabled:hover:scale-100"
             >

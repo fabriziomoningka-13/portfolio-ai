@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import profile from "@/data/profile.json";
 import { ChatWidgetProvider } from "@/components/ChatWidgetContext";
+import { ChatWidget } from "@/components/ChatWidget";
 import { SplashScreen } from "@/components/SplashScreen";
 
 const spaceGrotesk = Space_Grotesk({
@@ -56,6 +57,10 @@ export default function RootLayout({
         <ChatWidgetProvider>
           <SplashScreen />
           {children}
+          {/* ChatWidget SATU instance global di layout — supaya riwayat chat & state
+              (termasuk saat navigasi otomatis) tetap ada saat pindah halaman, tidak
+              ke-reset seperti kalau di-render terpisah di tiap page. */}
+          <ChatWidget />
         </ChatWidgetProvider>
       </body>
     </html>

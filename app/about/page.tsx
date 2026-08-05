@@ -3,7 +3,6 @@ import Image from "next/image";
 import { GraduationCap, Award, Languages, Sparkles } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ChatWidget } from "@/components/ChatWidget";
 import { Reveal } from "@/components/Reveal";
 import profile from "@/data/profile.json";
 
@@ -147,7 +146,6 @@ export default function AboutPage() {
         </div>
       </main>
       <Footer />
-      <ChatWidget />
     </>
   );
 }

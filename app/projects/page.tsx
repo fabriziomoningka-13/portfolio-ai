@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ChatWidget } from "@/components/ChatWidget";
 import { Reveal } from "@/components/Reveal";
 import { ProjectsGrid } from "@/components/ProjectsGrid";
 import type { Project } from "@/components/ProjectCard";
@@ -35,7 +34,6 @@ export default function ProjectsPage() {
         </div>
       </main>
       <Footer />
-      <ChatWidget />
     </>
   );
 }

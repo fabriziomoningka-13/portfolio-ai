@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Code2 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ChatWidget } from "@/components/ChatWidget";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { SkillBadge } from "@/components/SkillBadge";
 import profile from "@/data/profile.json";
@@ -46,7 +45,6 @@ export default function SkillsPage() {
         </div>
       </main>
       <Footer />
-      <ChatWidget />
     </>
   );
 }
