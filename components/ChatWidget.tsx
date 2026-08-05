@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { MessageCircle, X, Send, Bot, AlertCircle } from "lucide-react";
 import profile from "@/data/profile.json";
 import { useChatWidget } from "@/components/ChatWidgetContext";
+import { parseChatReply, hideInProgressMarker } from "@/lib/chatNavigation";
 
 interface Message {
   id: string;
@@ -28,6 +30,7 @@ export function ChatWidget() {
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -79,16 +82,32 @@ export function ChatWidget() {
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
+      let fullText = "";
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         const chunkText = decoder.decode(value, { stream: true });
+        fullText += chunkText;
+        const displayText = hideInProgressMarker(fullText);
         setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId ? { ...m, content: m.content + chunkText } : m
-          )
+          prev.map((m) => (m.id === assistantId ? { ...m, content: displayText } : m))
         );
+      }
+
+      // Cek apakah Vanessa menyisipkan marker navigasi tersembunyi di akhir
+      // jawaban (lihat data/system-prompt.md bagian "Navigasi Otomatis").
+      const { cleanText, navigateHref } = parseChatReply(fullText);
+      if (navigateHref) {
+        // Bersihkan marker dari teks yang ditampilkan ke user.
+        setMessages((prev) =>
+          prev.map((m) => (m.id === assistantId ? { ...m, content: cleanText } : m))
+        );
+        // Beri jeda sebentar supaya user sempat baca jawabannya dulu,
+        // baru halaman berpindah otomatis.
+        setTimeout(() => {
+          router.push(navigateHref);
+        }, 700);
       }
     } catch (error) {
       console.error("[ChatWidget] fetch error:", error);
