@@ -6,6 +6,7 @@ import { MessageCircle, X, Send, Bot, AlertCircle, Mic, Square } from "lucide-re
 import profile from "@/data/profile.json";
 import { useChatWidget } from "@/components/ChatWidgetContext";
 import { parseChatReply, hideInProgressMarker } from "@/lib/chatNavigation";
+import { speak, SPEECH_LANG } from "@/lib/speech";
 
 interface Message {
   id: string;
@@ -20,19 +21,8 @@ const QUICK_CHIPS = [
   "Pengalaman kerja?",
 ];
 
-const SPEECH_LANG = "id-ID";
-
 function createId() {
   return Math.random().toString(36).slice(2, 10);
-}
-
-/** Ucapkan teks lewat browser (gratis, bawaan browser - Web Speech API). */
-function speak(text: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel(); // hentikan ucapan sebelumnya kalau ada yg masih jalan
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = SPEECH_LANG;
-  window.speechSynthesis.speak(utterance);
 }
 
 export function ChatWidget() {
@@ -171,8 +161,32 @@ export function ChatWidget() {
     recognition.interimResults = true;
     transcriptRef.current = "";
 
+    // Guard: sebagian browser (mis. Opera/Opera GX) mendeteksi API-nya ADA
+    // tapi diam saja tidak pernah fire event apa pun. Kalau dalam 6 detik
+    // tidak ada respons sama sekali, anggap gagal dan kasih tahu user
+    // supaya tidak bingung nunggu tanpa kejelasan.
+    const noResponseTimer = setTimeout(() => {
+      setIsListening(false);
+      try {
+        recognition.stop();
+      } catch {
+        // abaikan kalau memang belum sempat start
+      }
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: createId(),
+          role: "assistant",
+          content:
+            "Voice chat sepertinya tidak didukung penuh di browser ini. Coba pakai Chrome/Edge, atau ketik pertanyaannya langsung ya.",
+          isError: true,
+        },
+      ]);
+    }, 6000);
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onresult = (event: any) => {
+      clearTimeout(noResponseTimer);
       let transcript = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript;
@@ -182,6 +196,7 @@ export function ChatWidget() {
     };
 
     recognition.onend = () => {
+      clearTimeout(noResponseTimer);
       setIsListening(false);
       const finalText = transcriptRef.current.trim();
       transcriptRef.current = "";
@@ -192,12 +207,28 @@ export function ChatWidget() {
     };
 
     recognition.onerror = () => {
+      clearTimeout(noResponseTimer);
       setIsListening(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: createId(),
+          role: "assistant",
+          content:
+            "Maaf, gagal mengakses mikrofon. Pastikan izin mikrofon sudah diberikan ke browser ini, atau coba ketik langsung.",
+          isError: true,
+        },
+      ]);
     };
 
     recognitionRef.current = recognition;
-    recognition.start();
-    setIsListening(true);
+    try {
+      recognition.start();
+      setIsListening(true);
+    } catch {
+      clearTimeout(noResponseTimer);
+      setIsListening(false);
+    }
   }
 
   function stopListening() {
