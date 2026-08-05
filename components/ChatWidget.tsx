@@ -6,7 +6,7 @@ import { MessageCircle, X, Send, Bot, AlertCircle, Mic, Square } from "lucide-re
 import profile from "@/data/profile.json";
 import { useChatWidget } from "@/components/ChatWidgetContext";
 import { parseChatReply, hideInProgressMarker } from "@/lib/chatNavigation";
-import { speak, SPEECH_LANG } from "@/lib/speech";
+import { SPEECH_LANG } from "@/lib/speech";
 
 interface Message {
   id: string;
@@ -49,7 +49,7 @@ export function ChatWidget() {
     setVoiceSupported(Boolean(SR) && "speechSynthesis" in window);
   }, []);
 
-  async function sendMessage(text: string, viaVoice = false) {
+  async function sendMessage(text: string) {
     const trimmed = text.trim();
     if (!trimmed || isStreaming) return;
 
@@ -115,15 +115,8 @@ export function ChatWidget() {
         prev.map((m) => (m.id === assistantId ? { ...m, content: cleanText } : m))
       );
 
-      // Kalau pesan ini dikirim lewat suara, ucapkan balik jawabannya juga
-      // (voice chat dua arah) — tidak dilakukan kalau user mengetik biasa,
-      // supaya tidak mengganggu.
-      if (viaVoice) {
-        speak(cleanText);
-      }
-
       if (navigateHref) {
-        // Beri jeda sebentar supaya user sempat baca/dengar jawabannya dulu,
+        // Beri jeda sebentar supaya user sempat baca jawabannya dulu,
         // baru halaman berpindah otomatis.
         setTimeout(() => {
           router.push(navigateHref);
@@ -202,7 +195,7 @@ export function ChatWidget() {
       transcriptRef.current = "";
       if (finalText) {
         setInput("");
-        sendMessage(finalText, true);
+        sendMessage(finalText);
       }
     };
 

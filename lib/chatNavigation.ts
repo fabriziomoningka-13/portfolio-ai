@@ -1,4 +1,8 @@
-const NAVIGATE_REGEX = /\[\[NAVIGATE:(home|about|skills|projects|contact)\]\]/i;
+// Marker mendukung 2 bentuk:
+// - [[NAVIGATE:target]]          -> halaman umum (home/about/skills/projects/contact)
+// - [[NAVIGATE:project:slug]]    -> halaman detail project tertentu, misal project:studio-ai
+const NAVIGATE_REGEX =
+  /\[\[NAVIGATE:(home|about|skills|projects|contact|project:[a-z0-9-]+)\]\]/i;
 
 const TARGET_TO_HREF: Record<string, string> = {
   home: "/#home",
@@ -7,6 +11,18 @@ const TARGET_TO_HREF: Record<string, string> = {
   projects: "/projects",
   contact: "/#contact",
 };
+
+/** Ubah target hasil match regex jadi path URL tujuan. */
+function resolveHref(target: string): string | null {
+  const lower = target.toLowerCase();
+
+  if (lower.startsWith("project:")) {
+    const slug = lower.slice("project:".length).trim();
+    return slug ? `/projects/${slug}` : null;
+  }
+
+  return TARGET_TO_HREF[lower] ?? null;
+}
 
 export interface ParsedChatReply {
   /** Teks jawaban yang aman ditampilkan ke user (marker sudah dihapus). */
@@ -17,9 +33,10 @@ export interface ParsedChatReply {
 
 /**
  * Selama streaming berlangsung, marker bisa saja baru "setengah jadi"
- * (misal baru "[[NAVI" doang). Fungsi ini menyembunyikan ekor teks yang
- * terlihat seperti awal marker, supaya tidak sempat kelihatan berkedip
- * di UI sebelum akhirnya dihapus penuh oleh parseChatReply().
+ * (misal baru "[[NAVI" doang, atau "[[NAVIGATE:project:stu" yang belum
+ * selesai). Fungsi ini menyembunyikan ekor teks yang terlihat seperti awal
+ * marker, supaya tidak sempat kelihatan berkedip di UI sebelum akhirnya
+ * dihapus penuh oleh parseChatReply().
  */
 export function hideInProgressMarker(text: string): string {
   const idx = text.lastIndexOf("[[");
@@ -27,7 +44,9 @@ export function hideInProgressMarker(text: string): string {
 
   const tail = text.slice(idx);
   const isCompleteMarker = NAVIGATE_REGEX.test(tail);
-  const looksLikePartialMarker = tail.length < 30; // batas wajar panjang marker kita
+  // Marker project:slug bisa lebih panjang dari marker biasa (nama slug),
+  // jadi batas toleransinya dilonggarkan sedikit.
+  const looksLikePartialMarker = tail.length < 60;
 
   if (isCompleteMarker || looksLikePartialMarker) {
     return text.slice(0, idx).trimEnd();
@@ -35,7 +54,7 @@ export function hideInProgressMarker(text: string): string {
   return text;
 }
 
-/** Cari marker [[NAVIGATE:target]] di teks jawaban chatbot, pisahkan dari teks yang ditampilkan. */
+/** Cari marker [[NAVIGATE:...]] di teks jawaban chatbot, pisahkan dari teks yang ditampilkan. */
 export function parseChatReply(rawText: string): ParsedChatReply {
   const match = rawText.match(NAVIGATE_REGEX);
   const cleanText = rawText.replace(NAVIGATE_REGEX, "").trimEnd();
@@ -44,6 +63,5 @@ export function parseChatReply(rawText: string): ParsedChatReply {
     return { cleanText, navigateHref: null };
   }
 
-  const target = match[1].toLowerCase();
-  return { cleanText, navigateHref: TARGET_TO_HREF[target] ?? null };
+  return { cleanText, navigateHref: resolveHref(match[1]) };
 }
