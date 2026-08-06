@@ -2,7 +2,7 @@
 
 Website portfolio pribadi dengan chatbot AI bernama **Vanessa** yang menjawab pertanyaan recruiter seputar skill, pengalaman, dan project — dibangun untuk mendemonstrasikan kemampuan fullstack dan AI engineering secara langsung.
 
-🔗 Live Demo: your-domain.vercel.app
+🔗 Live Demo: portfolio-ai-nu-pied.vercel.app
 
 Dikembangkan secara mandiri end-to-end oleh **Fabrizio Kevin Moningka** — dari perancangan sistem, chatbot logic, hingga deployment production.
 
