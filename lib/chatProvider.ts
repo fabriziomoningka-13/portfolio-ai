@@ -23,15 +23,78 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001";
 
 // --- Groq (OpenAI-compatible, gratis) ---
-const groq = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY || "not-configured",
-  baseURL: "https://api.groq.com/openai/v1",
-});
+// Rotasi 3 akun: kalau key yang aktif kena rate limit/credit habis, otomatis
+// pindah ke key berikutnya (1 -> 2 -> 3 -> 1 -> ...). Index "key terakhir yang
+// berhasil" disimpan di memory supaya request berikutnya mulai dari situ,
+// bukan selalu mulai dari key 1.
+const GROQ_KEYS = [
+  process.env.GROQ_API_KEY_1,
+  process.env.GROQ_API_KEY_2,
+  process.env.GROQ_API_KEY_3,
+].filter((key): key is string => Boolean(key));
+
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
+
+let currentGroqKeyIndex = 0;
+
+function getGroqClient(index: number): OpenAI {
+  return new OpenAI({
+    apiKey: GROQ_KEYS[index] || "not-configured",
+    baseURL: GROQ_BASE_URL,
+  });
+}
+
+/** Error yang menandakan key ini sudah tidak bisa dipakai sementara: rate
+ * limit (429) atau credit/quota habis (biasanya juga 429, kadang 401/403
+ * tergantung jenis error dari Groq). */
+function isRotatableError(err: unknown): boolean {
+  const status = (err as { status?: number })?.status;
+  return status === 429 || status === 401 || status === 403;
+}
+
+/**
+ * Jalankan `action` dengan client Groq, coba key demi key mulai dari
+ * currentGroqKeyIndex. Kalau semua key gagal dengan error rotatable,
+ * lempar error terakhir. Kalau berhasil, currentGroqKeyIndex diupdate
+ * supaya request berikutnya mulai dari key yang baru saja berhasil ini.
+ */
+async function withGroqRotation<T>(
+  action: (client: OpenAI) => Promise<T>
+): Promise<T> {
+  if (GROQ_KEYS.length === 0) {
+    throw new Error("Tidak ada GROQ_API_KEY_1/2/3 yang terisi di environment variables.");
+  }
+
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < GROQ_KEYS.length; attempt++) {
+    const index = (currentGroqKeyIndex + attempt) % GROQ_KEYS.length;
+    try {
+      const client = getGroqClient(index);
+      const result = await action(client);
+      currentGroqKeyIndex = index; // key ini berhasil, mulai dari sini lain kali
+      return result;
+    } catch (err) {
+      lastError = err;
+      if (!isRotatableError(err)) {
+        // Error bukan soal limit/quota (misal network error, bad request) ->
+        // gak ada gunanya coba key lain, langsung lempar.
+        throw err;
+      }
+      console.warn(
+        `[Groq] Key #${index + 1} kena limit/gagal, coba key berikutnya...`,
+        (err as Error)?.message
+      );
+    }
+  }
+
+  throw lastError;
+}
 
 /** Cek apakah provider yang sedang aktif sudah punya API key terisi. */
 export function isProviderConfigured(): boolean {
-  if (PROVIDER === "groq") return Boolean(process.env.GROQ_API_KEY);
+  if (PROVIDER === "groq") return GROQ_KEYS.length > 0;
   return Boolean(process.env.ANTHROPIC_API_KEY);
 }
 
@@ -48,11 +111,13 @@ export async function generateChatReply(
   messages: ChatMessage[]
 ): Promise<string> {
   if (PROVIDER === "groq") {
-    const completion = await groq.chat.completions.create({
-      model: GROQ_MODEL,
-      max_tokens: 512,
-      messages: [{ role: "system", content: system }, ...messages],
-    });
+    const completion = await withGroqRotation((client) =>
+      client.chat.completions.create({
+        model: GROQ_MODEL,
+        max_tokens: 512,
+        messages: [{ role: "system", content: system }, ...messages],
+      })
+    );
     return completion.choices[0]?.message?.content?.trim() || "";
   }
 
@@ -77,12 +142,17 @@ export async function* streamChatReply(
   messages: ChatMessage[]
 ): AsyncGenerator<string> {
   if (PROVIDER === "groq") {
-    const stream = await groq.chat.completions.create({
-      model: GROQ_MODEL,
-      max_tokens: 512,
-      messages: [{ role: "system", content: system }, ...messages],
-      stream: true,
-    });
+    // Rotasi hanya diterapkan pada saat MEMULAI stream (request awal ke
+    // Groq). Kalau errornya baru muncul di tengah-tengah stream (jarang
+    // terjadi), itu tidak dicoba ulang otomatis di sini.
+    const stream = await withGroqRotation((client) =>
+      client.chat.completions.create({
+        model: GROQ_MODEL,
+        max_tokens: 512,
+        messages: [{ role: "system", content: system }, ...messages],
+        stream: true,
+      })
+    );
     for await (const chunk of stream) {
       const delta = chunk.choices[0]?.delta?.content;
       if (delta) yield delta;
