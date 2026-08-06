@@ -1,12 +1,40 @@
 "use client";
 
+import { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
 import { Mail, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import profile from "@/data/profile.json";
 
+type Status = "idle" | "sending" | "success" | "error";
+
 export function Contact() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [status, setStatus] = useState<Status>("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+
+    setStatus("sending");
+
+    try {
+      await emailjs.sendForm(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        formRef.current,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      );
+      setStatus("success");
+      formRef.current.reset();
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setStatus("error");
+    }
+  };
+
   return (
     <section id="contact" className="mx-auto max-w-6xl px-6 py-20">
       <Reveal>
@@ -47,13 +75,7 @@ export function Contact() {
         </Reveal>
 
         <Reveal delay={0.2}>
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Form ini belum terhubung ke backend — akan diaktifkan di fase berikutnya.");
-            }}
-          >
+          <form ref={formRef} className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-1.5">
               <label htmlFor="contact-name" className="text-xs font-medium text-text-muted">
                 Nama
@@ -97,9 +119,21 @@ export function Contact() {
               />
             </div>
 
-            <Button type="submit" variant="solid" className="self-start">
-              <Send className="size-4" /> Kirim Pesan
+            <Button type="submit" variant="solid" className="self-start" disabled={status === "sending"}>
+              <Send className="size-4" />
+              {status === "sending" ? "Mengirim..." : "Kirim Pesan"}
             </Button>
+
+            {status === "success" && (
+              <p className="text-sm text-teal-primary">
+                Pesan terkirim! Terima kasih sudah menghubungi, aku akan balas secepatnya.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-sm text-red-400">
+                Gagal mengirim pesan. Coba lagi, atau hubungi lewat email langsung ya.
+              </p>
+            )}
           </form>
         </Reveal>
       </div>
