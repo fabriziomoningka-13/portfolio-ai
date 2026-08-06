@@ -46,5 +46,21 @@
       "Membangun website portofolio pribadi dari nol tanpa framework, dengan struktur kode modular (CSS & JS terpisah per fungsi) untuk kemudahan maintenance.",
       "Mengimplementasikan fitur interaktif (dark/light theme switcher, typing effect, scrollspy navigation, loading screen) dengan desain responsif untuk menampilkan personal branding, proyek, dan keahlian."
     ]
-  }
+  },
+  {
+  "slug": "brew-haven",
+  "title": "Brew Haven",
+  "description": "Landing page coffee shop modern dengan desain responsif, dilengkapi sticky navbar, hamburger menu, search menu, gallery, testimonials, dan animasi AOS untuk pengalaman scroll yang halus.",
+  "tech": ["HTML5", "CSS3", "JavaScript", "Font Awesome", "AOS"],
+  "thumbnail": "/images/projects/brew-haven.png",
+  "demoUrl": "https://fabriziomoningka-13.github.io/BrewHaven/",
+  "githubUrl": "https://github.com/fabriziomoningka-13/BrewHaven",
+  "period": "2026",
+  "context": "Individu",
+  "highlights": [
+    "Membangun landing page coffee shop modern dengan desain responsif (mobile-first) sebagai proyek portofolio Frontend Developer, lengkap dengan sticky navbar dan hamburger menu untuk navigasi mobile.",
+    "Mengimplementasikan fitur interaktif: search menu, contact form, gallery, testimonials, dan tombol back-to-top untuk meningkatkan pengalaman pengguna.",
+    "Menambahkan animasi scroll berbasis AOS (Animate On Scroll) untuk transisi visual yang halus antar section."
+  ]
+}
 ]
