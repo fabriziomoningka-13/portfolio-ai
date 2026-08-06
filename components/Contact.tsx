@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { Mail, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import profile from "@/data/profile.json";
 
@@ -67,6 +67,15 @@ export function Contact() {
           >
             <GithubIcon className="size-5 text-teal-primary" aria-hidden="true" />
             GitHub
+          </a>
+          <a
+            href={profile.contact.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-xl border border-border bg-dark-surface p-4 text-sm text-text-primary transition-colors hover:border-teal-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary"
+          >
+            <InstagramIcon className="size-5 text-teal-primary" aria-hidden="true" />
+            Instagram
           </a>
           <div className="flex items-center gap-3 rounded-xl border border-border bg-dark-surface p-4 text-sm text-text-muted">
             <MapPin className="size-5 text-teal-primary" aria-hidden="true" />

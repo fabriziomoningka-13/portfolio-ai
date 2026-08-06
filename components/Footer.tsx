@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Mail, ArrowUp } from "lucide-react";
 import profile from "@/data/profile.json";
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { GithubIcon, LinkedinIcon, InstagramIcon } from "@/components/icons";
 
 const navLinks = [
   { href: "/#home", label: "Home" },
@@ -15,6 +15,7 @@ const socialLinks = [
   { href: `mailto:${profile.contact.email}`, label: "Email", icon: Mail },
   { href: profile.contact.linkedin, label: "LinkedIn", icon: LinkedinIcon },
   { href: profile.contact.github, label: "GitHub", icon: GithubIcon },
+  { href: profile.contact.instagram, label: "Instagram", icon: InstagramIcon },
 ];
 
 export function Footer() {
