@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import type { ReactNode } from "react";
 
 /**
@@ -11,16 +11,32 @@ import type { ReactNode } from "react";
  * memberi efek transisi yang smooth ala website modern.
  */
 export default function Template({ children }: { children: ReactNode }) {
-  // Paksa scroll ke paling atas setiap kali halaman baru dimuat (template
-  // remount = pindah halaman). Tanpa ini, kombinasi Navbar yang sticky +
-  // animasi geser (y: 16 -> 0) di bawah kadang membuat browser salah
-  // menghitung posisi scroll setelah navigasi, sehingga halaman "mendarat"
-  // sedikit ter-scroll ke bawah -> bagian atas konten (foto, judul) jadi
-  // sedikit ketutup Navbar sampai user scroll manual. Pakai "auto" (instan,
-  // bukan "smooth") supaya tidak bentrok/terlihat aneh bareng animasi fade
-  // milik framer-motion di bawah.
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  // Kalau URL punya hash (#home / #contact), scroll ke SECTION itu, bukan
+  // paksa ke atas. PENTING: pakai useLayoutEffect (bukan useEffect biasa) —
+  // useLayoutEffect jalan SEBELUM browser sempat menggambar (paint) tampilan
+  // baru, sedangkan useEffect jalan SESUDAHNYA. Kalau pakai useEffect biasa,
+  // ada jeda waktu di mana Navbar (termasuk animasi underline layoutId di
+  // menu aktif) sempat terukur/teranimasi dulu pada posisi scroll LAMA,
+  // baru kemudian halaman "melompat" ke posisi scroll baru — dua gerakan
+  // (animasi underline horizontal + lompatan scroll vertikal) jadi
+  // tercampur, sehingga underline terlihat seperti bergerak dari
+  // bawah-ke-atas alih-alih murni ke kiri/kanan. Dengan useLayoutEffect,
+  // posisi scroll sudah "beres" duluan sebelum Navbar/Framer Motion sempat
+  // mengukur posisi elemen, jadi animasi underline murni horizontal.
+  useLayoutEffect(() => {
+    const hash = window.location.hash;
+
+    if (hash) {
+      const id = hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "auto", block: "start" });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
   }, []);
 
   return (
