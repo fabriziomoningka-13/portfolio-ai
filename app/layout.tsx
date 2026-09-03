@@ -7,6 +7,7 @@ import { ChatWidget } from "@/components/ChatWidget";
 import { SplashScreen } from "@/components/SplashScreen";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import VisitorCounter from "@/components/VisitorCounter";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -77,6 +78,7 @@ export default function RootLayout({
               ke-reset seperti kalau di-render terpisah di tiap page. */}
           <ChatWidget />
         </ChatWidgetProvider>
+        <VisitorCounter />
       </body>
     </html>
   );
