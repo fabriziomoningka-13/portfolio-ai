@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import type { ReactNode } from "react";
 
 /**
@@ -10,6 +11,18 @@ import type { ReactNode } from "react";
  * memberi efek transisi yang smooth ala website modern.
  */
 export default function Template({ children }: { children: ReactNode }) {
+  // Paksa scroll ke paling atas setiap kali halaman baru dimuat (template
+  // remount = pindah halaman). Tanpa ini, kombinasi Navbar yang sticky +
+  // animasi geser (y: 16 -> 0) di bawah kadang membuat browser salah
+  // menghitung posisi scroll setelah navigasi, sehingga halaman "mendarat"
+  // sedikit ter-scroll ke bawah -> bagian atas konten (foto, judul) jadi
+  // sedikit ketutup Navbar sampai user scroll manual. Pakai "auto" (instan,
+  // bukan "smooth") supaya tidak bentrok/terlihat aneh bareng animasi fade
+  // milik framer-motion di bawah.
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}

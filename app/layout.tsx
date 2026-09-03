@@ -5,6 +5,8 @@ import profile from "@/data/profile.json";
 import { ChatWidgetProvider } from "@/components/ChatWidgetContext";
 import { ChatWidget } from "@/components/ChatWidget";
 import { SplashScreen } from "@/components/SplashScreen";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -56,7 +58,20 @@ export default function RootLayout({
 
         <ChatWidgetProvider>
           <SplashScreen />
+          {/* Navbar & Footer SATU instance global di layout (sama seperti alasan
+              ChatWidget ada di sini) — supaya keduanya TIDAK di-mount ulang setiap
+              pindah halaman. Sebelumnya tiap page (About/Skills/Projects/dst)
+              me-render <Navbar /> & <Footer /> sendiri-sendiri, sehingga Next.js
+              menganggapnya elemen baru setiap navigasi -> ter-mount ulang dari nol
+              -> terlihat seperti "berkedip/animasi ulang". Dengan diletakkan di
+              layout, hanya {children} di tengah yang berganti saat pindah halaman;
+              Navbar & Footer tetap sama (tidak remount), transisi jadi mulus.
+              PENTING: setelah ini, <Navbar /> dan <Footer /> HARUS dihapus dari
+              setiap file page (app/page.tsx, app/about/page.tsx, app/skills/page.tsx,
+              app/projects/page.tsx) supaya tidak muncul dobel. */}
+          <Navbar />
           {children}
+          <Footer />
           {/* ChatWidget SATU instance global di layout — supaya riwayat chat & state
               (termasuk saat navigasi otomatis) tetap ada saat pindah halaman, tidak
               ke-reset seperti kalau di-render terpisah di tiap page. */}

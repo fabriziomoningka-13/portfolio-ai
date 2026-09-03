@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MessageCircle, X, Send, Bot, AlertCircle, Mic, Square } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import profile from "@/data/profile.json";
 import { useChatWidget } from "@/components/ChatWidgetContext";
 import { parseChatReply, hideInProgressMarker } from "@/lib/chatNavigation";
@@ -20,6 +22,38 @@ const QUICK_CHIPS = [
   "Project terakhir?",
   "Pengalaman kerja?",
 ];
+
+// Komponen custom untuk render markdown di dalam bubble chat yang sempit.
+// Styling di sini sengaja ringkas (margin kecil, list rapat) supaya tetap
+// muat & rapi di lebar bubble ~85% dari widget chat.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const markdownComponents: Record<string, (props: any) => React.ReactElement> = {
+  p: ({ children }) => <p className="mb-2 leading-relaxed last:mb-0">{children}</p>,
+  ul: ({ children }) => (
+    <ul className="mb-2 ml-4 list-disc space-y-1 last:mb-0">{children}</ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="mb-2 ml-4 list-decimal space-y-1 last:mb-0">{children}</ol>
+  ),
+  li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+  strong: ({ children }) => (
+    <strong className="font-semibold text-teal-primary">{children}</strong>
+  ),
+  em: ({ children }) => <em className="italic">{children}</em>,
+  a: ({ children, href }) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline decoration-teal-primary/50 underline-offset-2 hover:text-teal-primary"
+    >
+      {children}
+    </a>
+  ),
+  code: ({ children }) => (
+    <code className="rounded bg-dark-base px-1 py-0.5 text-xs">{children}</code>
+  ),
+};
 
 function createId() {
   return Math.random().toString(36).slice(2, 10);
@@ -274,31 +308,49 @@ export function ChatWidget() {
               </div>
             )}
 
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
-                  m.role === "user"
-                    ? "ml-auto rounded-tr-sm bg-teal-primary text-dark-base"
-                    : m.isError
-                    ? "rounded-tl-sm border border-red-500/40 bg-red-500/10 text-red-300"
-                    : "rounded-tl-sm bg-dark-surface text-text-primary"
-                }`}
-              >
-                {m.isError && (
-                  <div className="mb-1 flex items-center gap-1 text-xs font-medium">
-                    <AlertCircle className="size-3.5" /> Error
-                  </div>
-                )}
-                {m.content || (
-                  <span className="inline-flex gap-1">
-                    <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.3s]" />
-                    <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.15s]" />
-                    <span className="size-1.5 animate-bounce rounded-full bg-text-muted" />
-                  </span>
-                )}
-              </div>
-            ))}
+            {messages.map((m) => {
+              // Pesan assistant yang sukses (bukan error, bukan lagi kosong
+              // menunggu stream) dirender sebagai markdown supaya **bold**,
+              // list, dsb tampil rapi. Pesan user & pesan error tetap teks
+              // polos seperti biasa.
+              const shouldRenderMarkdown =
+                m.role === "assistant" && !m.isError && m.content.length > 0;
+
+              return (
+                <div
+                  key={m.id}
+                  className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
+                    m.role === "user"
+                      ? "ml-auto rounded-tr-sm bg-teal-primary text-dark-base"
+                      : m.isError
+                      ? "rounded-tl-sm border border-red-500/40 bg-red-500/10 text-red-300"
+                      : "rounded-tl-sm bg-dark-surface text-text-primary"
+                  }`}
+                >
+                  {m.isError && (
+                    <div className="mb-1 flex items-center gap-1 text-xs font-medium">
+                      <AlertCircle className="size-3.5" /> Error
+                    </div>
+                  )}
+
+                  {shouldRenderMarkdown ? (
+                    <div className="prose-chat">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                        {m.content}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    m.content || (
+                      <span className="inline-flex gap-1">
+                        <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.3s]" />
+                        <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.15s]" />
+                        <span className="size-1.5 animate-bounce rounded-full bg-text-muted" />
+                      </span>
+                    )
+                  )}
+                </div>
+              );
+            })}
 
             {isListening && (
               <div className="ml-auto flex max-w-[85%] items-center gap-2 rounded-2xl rounded-tr-sm bg-teal-primary/20 px-3 py-2 text-sm text-teal-primary">

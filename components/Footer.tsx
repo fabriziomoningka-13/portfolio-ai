@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Mail, ArrowUp } from "lucide-react";
 import profile from "@/data/profile.json";
@@ -19,6 +21,15 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  // "Back to top" harus bekerja di SEMUA halaman (/, /about, /skills,
+  // /projects), bukan cuma di halaman utama. Section id="home" cuma ada di
+  // halaman utama, jadi href="#home" gagal di halaman lain (elemen dengan
+  // id itu tidak ditemukan -> tidak terjadi apa-apa). Solusinya: scroll ke
+  // paling atas halaman yang sedang aktif, apa pun halamannya.
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   return (
     <footer className="border-t border-border bg-dark-surface/40">
       <div className="mx-auto max-w-6xl px-6 py-14">
@@ -77,12 +88,13 @@ export function Footer() {
           <span className="text-xs text-text-muted">
             © {new Date().getFullYear()} {profile.name}. All rights reserved.
           </span>
-          <a
-            href="#home"
+          <button
+            type="button"
+            onClick={scrollToTop}
             className="flex items-center gap-1.5 text-xs text-text-muted transition-colors hover:text-teal-primary"
           >
             Back to top <ArrowUp className="size-3.5" />
-          </a>
+          </button>
         </div>
       </div>
     </footer>
