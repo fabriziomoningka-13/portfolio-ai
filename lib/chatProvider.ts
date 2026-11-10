@@ -23,14 +23,16 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001";
 
 // --- Groq (OpenAI-compatible, gratis) ---
-// Rotasi 3 akun: kalau key yang aktif kena rate limit/credit habis, otomatis
-// pindah ke key berikutnya (1 -> 2 -> 3 -> 1 -> ...). Index "key terakhir yang
+// Rotasi 5 akun: kalau key yang aktif kena rate limit/credit habis, otomatis
+// pindah ke key berikutnya (1 -> 3 -> 5 -> 1 -> ...). Index "key terakhir yang
 // berhasil" disimpan di memory supaya request berikutnya mulai dari situ,
 // bukan selalu mulai dari key 1.
 const GROQ_KEYS = [
   process.env.GROQ_API_KEY_1,
   process.env.GROQ_API_KEY_2,
   process.env.GROQ_API_KEY_3,
+  process.env.GROQ_API_KEY_4,
+  process.env.GROQ_API_KEY_5,
 ].filter((key): key is string => Boolean(key));
 
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
